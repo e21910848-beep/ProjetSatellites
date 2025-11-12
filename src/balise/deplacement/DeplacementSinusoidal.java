@@ -36,7 +36,7 @@ public class DeplacementSinusoidal implements StrategieDeplacementBalise {
     public void deplacer(Balise b) {
 
         int delay = 1; // milliseconds
-        ActionListener taskPerformer = new ActionListener() {
+        ActionListener taskPerformer = new ActionListener(){
 
 
             @Override
@@ -50,6 +50,11 @@ public class DeplacementSinusoidal implements StrategieDeplacementBalise {
 
                 if (enSurface) {
                     handleSurface(pos);
+                    return;
+                }
+
+                if(enDecente){
+                    handleDecente(pos);
                     return;
                 }
 
