@@ -1,7 +1,7 @@
-package Balises.deplacement;
+package balise.deplacement;
 
-import Balises.Balise;
-import Balises.StrategieDeplacementBalise;
+import balise.Balise;
+import balise.StrategieDeplacementBalise;
 
 public class DeplacementImmobile implements StrategieDeplacementBalise {
     @Override

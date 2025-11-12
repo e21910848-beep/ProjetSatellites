@@ -1,4 +1,4 @@
-package Balises;
+package balise;
 
 public enum Etat {
     COLLECT,

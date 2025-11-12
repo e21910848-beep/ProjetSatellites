@@ -1,4 +1,4 @@
-package Balises;
+package balise;
 
 public interface StrategieDeplacementBalise {
 
