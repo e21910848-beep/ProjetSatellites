@@ -17,7 +17,7 @@ public class DeplacementHorizontal implements StrategieDeplacementBalise {
     private Integer fondY;
     private Integer direction = 1;
     private boolean enSurface = false;
-    private Integer vitesse = 2;
+    private double vitesse = 1.5;
     Random r = new Random();
     private  int attenteSurface = 0;
 

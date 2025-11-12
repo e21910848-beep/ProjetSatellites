@@ -18,7 +18,7 @@ public class DeplacementVertical implements StrategieDeplacementBalise {
     private Integer direction = 1;
     private boolean enSurface = false;
     private boolean enDecente = false;
-    private Integer vitesse = 2;
+    private double vitesse = 1.25;
     Random r = new Random();
     private  int attenteSurface = 0;
 
@@ -116,4 +116,6 @@ public class DeplacementVertical implements StrategieDeplacementBalise {
         balise.setPosition(point);
         balise.repaint();
     }
+
+
 }

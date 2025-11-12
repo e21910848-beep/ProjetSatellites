@@ -1,6 +1,7 @@
 package balise;
 
 import balise.deplacement.DeplacementHorizontal;
+import balise.deplacement.DeplacementSinusoidal;
 import balise.deplacement.DeplacementVertical;
 import nicellipse.component.NiRectangle;
 import nicellipse.component.NiSpace;
@@ -28,11 +29,17 @@ public class SceneBaliseTest {
         Balise baliseVertical = new Balise(startX, startY, 150);
         sea.add(baliseVertical);
 
+        Balise baliseSin = new Balise(startX, startY, 150);
+        sea.add(baliseSin);
+
         DeplacementHorizontal dep = new DeplacementHorizontal(balise, sea.getWidth(), sea.getHeight());
         dep.deplacer(balise);
 
         DeplacementVertical deplacementVertical = new DeplacementVertical(baliseVertical, sea.getWidth(), sea.getHeight());
         deplacementVertical.deplacer(baliseVertical);
+
+        DeplacementSinusoidal deplacementSin = new DeplacementSinusoidal(baliseSin, sea.getWidth(), sea.getHeight());
+        deplacementSin.deplacer(baliseSin);
 
         space.openInWindow();
     }
