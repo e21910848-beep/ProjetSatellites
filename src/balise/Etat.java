@@ -2,5 +2,7 @@ package balise;
 
 public enum Etat {
     COLLECT,
-    SYNCRONISER
+    SYNCRONISER,
+    TRANSFERT,
+    IMMOBILE
 }

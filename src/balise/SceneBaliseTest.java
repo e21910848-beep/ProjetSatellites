@@ -16,37 +16,40 @@ public class SceneBaliseTest {
 
         NiRectangle sea = new NiRectangle();
         sea.setBackground(new Color(30, 144, 255));
-        sea.setLocation(0, 200);  // Sea starts at y=200 in space coordinates
-        sea.setSize(600, 200);    // Sea height is 200 pixels
+        sea.setLocation(0, 200);
+        sea.setSize(600, 200);
         space.add(sea);
 
         int startX = sea.getWidth() / 2 - 15;
         int startY = sea.getHeight() / 2 - 15;
+
+        // Create balises with different strategies
         int test1 = (int)(Math.random() * (sea.getWidth() / 2 - sea.getHeight() / 2)) + sea.getHeight() / 2;
         int test2 = (int)(Math.random() * (sea.getHeight() / 2 - sea.getWidth() / 2)) + sea.getWidth() / 2;
 
-        Balise balise = new Balise(test1, test2, 150);
-        sea.add(balise);
+        Balise baliseHorizontal = new Balise(startX, startY, 150, new DeplacementHorizontal());
+        sea.add(baliseHorizontal);
 
         int test3 = (int)(Math.random() * (sea.getWidth() / 2 - sea.getHeight() / 2)) + sea.getHeight() / 2;
         int test6 = (int)(Math.random() * (sea.getHeight() / 2 - sea.getWidth() / 2)) + sea.getWidth() / 2;
 
-        Balise baliseVertical = new Balise(test6, test3, 150);
+        Balise baliseVertical = new Balise(startX, startY, 150, new DeplacementVertical());
         sea.add(baliseVertical);
 
         int test5 = (int)(Math.random() * (sea.getWidth() / 2 - sea.getHeight() / 2)) + sea.getHeight() / 2;
         int test4 = (int)(Math.random() * (sea.getHeight() / 2 - sea.getWidth() / 2)) + sea.getWidth() / 2;
-        Balise baliseSin = new Balise(test4, test5, 150);
+        Balise baliseSin = new Balise(startX, startY, 150, new DeplacementSinusoidal());
         sea.add(baliseSin);
 
-        DeplacementHorizontal dep = new DeplacementHorizontal(balise, sea.getWidth(), sea.getHeight());
-        dep.deplacer(balise);
+        // Create controllers for each balise
+        BaliseController controllerHorizontal = new BaliseController(baliseHorizontal, sea.getWidth(), sea.getHeight());
+        BaliseController controllerVertical = new BaliseController(baliseVertical, sea.getWidth(), sea.getHeight());
+        BaliseController controllerSin = new BaliseController(baliseSin, sea.getWidth(), sea.getHeight());
 
-        DeplacementVertical deplacementVertical = new DeplacementVertical(baliseVertical, sea.getWidth(), sea.getHeight());
-        deplacementVertical.deplacer(baliseVertical);
-
-        DeplacementSinusoidal deplacementSin = new DeplacementSinusoidal(baliseSin, sea.getWidth(), sea.getHeight());
-        deplacementSin.deplacer(baliseSin);
+        // Start all controllers
+        controllerHorizontal.start();
+        controllerVertical.start();
+        controllerSin.start();
 
         space.openInWindow();
     }

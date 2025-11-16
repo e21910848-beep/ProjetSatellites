@@ -1,7 +1,7 @@
 package balise;
 
+import java.awt.Point;
+
 public interface StrategieDeplacementBalise {
-
-    public void deplacer(Balise b);
-
+    Point deplacer(Point currentPosition, Balise balise, int spaceWidth, int spaceHeight);
 }
