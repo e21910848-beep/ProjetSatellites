@@ -1,23 +1,27 @@
 package balise.deplacement;
 
 import balise.Balise;
+import balise.OceanBounds;
 import balise.StrategieDeplacementBalise;
-import java.awt.Point;
 
 public class DeplacementHorizontal implements StrategieDeplacementBalise {
-    private int direction = 1;
-    private double vitesse = 7.5;
+
+    private int dir = 1;
+    private int speed = 7;
 
     @Override
-    public Point deplacer(Point pos, Balise balise, int largeur, int hauteur) {
-        // Create new point to avoid reference issues
-        Point newPos = new Point(pos);
-        newPos.x += direction * vitesse;
+    public void deplacer(Balise b, OceanBounds bounds) {
+        int nx = b.getX() + dir * speed;
 
-        if (newPos.x < 10 || newPos.x > largeur - 40) {
-            direction *= -1;
+        if (nx < bounds.left) {
+            nx = bounds.left;
+            dir = 1;
+        }
+        if (nx > bounds.right) {
+            nx = bounds.right;
+            dir = -1;
         }
 
-        return newPos;
+        b.setPosition(nx, b.getY());
     }
 }

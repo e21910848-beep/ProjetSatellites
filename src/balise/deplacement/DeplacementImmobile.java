@@ -1,12 +1,15 @@
 package balise.deplacement;
 
 import balise.Balise;
+import balise.OceanBounds;
 import balise.StrategieDeplacementBalise;
 import java.awt.Point;
 
 public class DeplacementImmobile implements StrategieDeplacementBalise {
+
+
     @Override
-    public Point deplacer(Point pos, Balise balise, int largeur, int hauteur) {
-        return pos;
+    public void deplacer(Balise b, OceanBounds bounds) {
+
     }
 }

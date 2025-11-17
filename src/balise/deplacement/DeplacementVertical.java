@@ -1,22 +1,29 @@
 package balise.deplacement;
 
+
 import balise.Balise;
+import balise.OceanBounds;
 import balise.StrategieDeplacementBalise;
-import java.awt.Point;
+
 
 public class DeplacementVertical implements StrategieDeplacementBalise {
-    private int direction = 1;
-    private double vitesse = 10.5;
+    private int dir = 1;
+    private int speed = 1;
 
     @Override
-    public Point deplacer(Point pos, Balise balise, int largeur, int hauteur) {
-        Point newPos = new Point(pos);
-        newPos.y += direction * vitesse;
+    public void deplacer(Balise b, OceanBounds bounds) {
+        int ny = b.getY() + dir * speed;
 
-        if (newPos.y < 20 || newPos.y >= hauteur) {
-            direction *= -1;
+        // Bounce at ocean boundaries
+        if (ny <= bounds.top) {
+            ny = bounds.top;
+            dir = 1; // Go down
+        }
+        if (ny >= bounds.bottom -15) {
+            ny = bounds.bottom -15;
+            dir = -1; // Go up
         }
 
-        return newPos;
+        b.setPosition(b.getX(), ny);
     }
 }
