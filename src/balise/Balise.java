@@ -28,6 +28,20 @@ public class Balise {
         view.setLocation(pos);
     }
 
+
+
+
+
+    public int getCpt() { return cpt; }
+    public void resetCpt() { cpt = 0; }
+    public void incCpt() {
+        if (cpt < memoireMax) {
+            cpt++;
+        }
+    }
+
+
+
     public NiEllipse getView() { return view; }
 
     public int getX() { return pos.x; }
@@ -42,18 +56,10 @@ public class Balise {
             collectDepth = y;
         }
     }
-
     public int getCollectDepth() { return collectDepth; }
     public Etat getEtat() { return etat; }
     public void setEtat(Etat e) { etat = e; }
 
-    public int getCpt() { return cpt; }
-    public void resetCpt() { cpt = 0; }
-    public void incCpt() {
-        if (cpt < memoireMax) {
-            cpt++;
-        }
-    }
 
     public void setStrategie(StrategieDeplacementBalise s) {
         strategie = s;

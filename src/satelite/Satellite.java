@@ -28,18 +28,13 @@ public class Satellite extends NiRectangle {
 
     public void deplacer() {
         if (!isSyncing) {
-            // Move from left to right
             position.x += vitesse;
-
-            // Loop around when reaching the right border
             if (position.x > largeurEspace) {
                 position.x = -this.getWidth();
             }
-
             this.setLocation(position);
         }
 
-        // Handle sync timer
         if (isSyncing) {
             syncTimer--;
             if (syncTimer <= 0) {
@@ -61,9 +56,15 @@ public class Satellite extends NiRectangle {
         this.setBackground(normalColor);
     }
 
-    // ... rest of getters/setters ...
+    // ADD THESE MISSING METHODS:
+    public boolean isSyncing() {
+        return isSyncing;
+    }
 
-    // Getters and setters
+    public boolean isAvailable() {
+        return !isSyncing;
+    }
+
     public Point getPosition() {
         return position;
     }
