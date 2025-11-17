@@ -6,5 +6,6 @@ public enum Etat {
     TRANSFER,     // At surface transferring data
     DESCENDING ,
     TRANSFERRING,
-    WAITING_FOR_SYNC// Moving down to collection depth
+    WAITING_FOR_SYNC,// Moving down to collection depth
+    WAIT_SYNC
 }

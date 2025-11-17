@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../../../Téléchargements/Nicellipse-main (1)/Nicellipse-main/Nicellipse-main1.iml" filepath="$PROJECT_DIR$/../../../Téléchargements/Nicellipse-main (1)/Nicellipse-main/Nicellipse-main1.iml" />
+      <module fileurl="file://$USER_HOME$/Downloads/Nicellipse-main/Nicellipse-main.iml" filepath="$USER_HOME$/Downloads/Nicellipse-main/Nicellipse-main.iml" />
       <module fileurl="file://$PROJECT_DIR$/ProjetSatellites.iml" filepath="$PROJECT_DIR$/ProjetSatellites.iml" />
     </modules>
   </component>

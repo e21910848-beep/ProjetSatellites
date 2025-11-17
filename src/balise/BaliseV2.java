@@ -1,73 +1,76 @@
 package balise;
 
-import balise.Balise;
-import balise.Etat;
+import java.awt.Color;
 import balise.deplacement.DeplacementDescente;
 import balise.deplacement.DeplacementMontee;
-import balise.sync.BaliseObserver;
-import satelite.Satellite;
-import java.util.ArrayList;
-import java.util.List;
+import balise.events.EventHandler;
 
-public class BaliseV2 extends Balise implements BaliseObserver {
-    // Observer pattern additions
-    private List<SatelliteV2> observedSatellites = new ArrayList<>();
-    private SatelliteV2 availableSatellite;
-    private int oceanX;
+public class BaliseV2 extends Balise {
 
-    public BaliseV2(int x, int y, balise.StrategieDeplacementBalise initial, int oceanX) {
+    // Event handler à la Account2
+    private final EventHandler eventHandler;
+
+    // Pour calculer la position X “monde” (océan décalé)
+    private final int oceanX;
+
+    public BaliseV2(int x, int y, StrategieDeplacementBalise initial, int oceanX) {
         super(x, y, initial);
         this.oceanX = oceanX;
+        this.eventHandler = new EventHandler();
     }
 
-    // Observer pattern method
-    @Override
-    public void onSatelliteAbove(Satellite satellite) {
-        if (satellite instanceof SatelliteV2) {
-            SatelliteV2 satV2 = (SatelliteV2) satellite;
-            if (getEtat() == Etat.WAITING_FOR_SYNC && satV2.isAvailable()) {
-                if (satV2.isAboveBalise(getX(), oceanX)) {
-                    this.availableSatellite = satV2;
-                    System.out.println("BaliseV2 detected satellite above!");
-                }
-            }
+    public EventHandler getEventHandler() {
+        return eventHandler;
+    }
+
+    /**
+     * X en coordonnées “monde” (espace graphique).
+     */
+    public int getWorldX() {
+        return getX() + oceanX;
+    }
+
+    /**
+     * Lancement de la synchronisation quand un satellite est au-dessus et dispo.
+     */
+    public void startSynchronization(SatelliteV2 satellite) {
+        if (!satellite.isAvailable()) {
+            return;
         }
-    }
 
-    public void subscribeToSatellite(SatelliteV2 satellite) {
-        satellite.addObserver(this);
-        observedSatellites.add(satellite);
-    }
-
-    public void trySynchronize() {
-        if (availableSatellite != null && availableSatellite.isAvailable()) {
-            startSynchronization(availableSatellite);
-        }
-    }
-
-    private void startSynchronization(SatelliteV2 satellite) {
-        System.out.println("Starting synchronization!");
-        satellite.startSync();
+        System.out.println("Starting synchronization with satellite " + satellite);
         setEtat(Etat.TRANSFERRING);
-        getView().setBackground(java.awt.Color.CYAN);
+        getView().setBackground(Color.CYAN);
 
-        // Simulate data transfer
+        satellite.startSync();
+        eventHandler.send(new BaliseTransferStartEvent(this, satellite));
+
+        // Simulation simple : transfert pendant ~2s puis fin
         new Thread(() -> {
             try {
                 Thread.sleep(2000);
-                completeSynchronization();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Thread.currentThread().interrupt();
             }
+            completeSynchronization(satellite);
         }).start();
     }
 
-    private void completeSynchronization() {
-        System.out.println("Synchronization complete!");
+    private void completeSynchronization(SatelliteV2 satellite) {
+        System.out.println("Synchronization complete for balise " + this);
         resetCpt();
         setEtat(Etat.DESCENDING);
-        this.availableSatellite = null;
-        getView().setBackground(java.awt.Color.YELLOW);
+        getView().setBackground(Color.YELLOW);
         setStrategie(new DeplacementDescente());
+
+        eventHandler.send(new BaliseTransferCompletedEvent(this, satellite));
+    }
+
+    /**
+     * Méthode pratique si un autre composant veut forcer la remontée.
+     */
+    public void startAscending() {
+        setEtat(Etat.ASCENDING);
+        setStrategie(new DeplacementMontee());
     }
 }

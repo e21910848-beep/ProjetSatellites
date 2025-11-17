@@ -1,46 +1,46 @@
 package balise;
 
-import satelite.Satellite;
-import balise.sync.BaliseObserver;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SatelliteV2 extends Satellite implements balise.sync.SatelliteObservable {
-    // Observer pattern additions
-    private List<BaliseObserver> observers = new ArrayList<>();
+import satelite.Satellite;
+
+public class SatelliteV2 extends Satellite {
+
+    // Liste des balises à surveiller (comme "abonnés")
+    private final List<BaliseV2> trackedBalises = new ArrayList<>();
 
     public SatelliteV2(int x, int y, int vitesse, int largeurEspace) {
         super(x, y, vitesse, largeurEspace);
     }
 
-    // Observer pattern methods
-    @Override
-    public void addObserver(BaliseObserver observer) {
-        observers.add(observer);
-    }
-
-    @Override
-    public void removeObserver(BaliseObserver observer) {
-        observers.remove(observer);
-    }
-
-    @Override
-    public void notifyObservers() {
-        for (BaliseObserver observer : observers) {
-            observer.onSatelliteAbove(this);
+    public void trackBalise(BaliseV2 balise) {
+        if (!trackedBalises.contains(balise)) {
+            trackedBalises.add(balise);
         }
+    }
+
+    public void untrackBalise(BaliseV2 balise) {
+        trackedBalises.remove(balise);
     }
 
     @Override
     public void deplacer() {
-        super.deplacer(); // Call V1 movement
-        notifyObservers(); // V2 addition: notify observers when moving
+        super.deplacer();
+
+        // Après déplacement, on vérifie les balises suivies
+        for (BaliseV2 b : trackedBalises) {
+            if (this.isAvailable() && isAboveBalise(b)) {
+                // EventHandler style : on envoie un événement au handler de la balise
+                b.getEventHandler().send(new SatelliteAboveBaliseEvent(b, this));
+            }
+        }
     }
 
-    // Helper method to check if satellite is above a balise
-    public boolean isAboveBalise(int baliseX, int oceanX) {
-        int baliseWorldX = baliseX + oceanX;
+    // Vérifie si le satellite est à la verticale de la balise
+    public boolean isAboveBalise(BaliseV2 balise) {
         int satelliteX = getPosition().x;
+        int baliseWorldX = balise.getWorldX();
         return Math.abs(satelliteX - baliseWorldX) < 50;
     }
 }
